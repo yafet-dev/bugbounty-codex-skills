@@ -1,0 +1,4 @@
+interface:
+  display_name: "Mobile Security"
+  short_description: "Android and iOS app security testing"
+  default_prompt: "Use $mobile-security to map mobile security risk across the provided app artifacts, endpoints, or traffic."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Denial of Service"
+  short_description: "Application DoS and resource abuse testing"
+  default_prompt: "Use $dos to map denial-of-service risk across the provided endpoints, flows, or HTTP/API traffic."

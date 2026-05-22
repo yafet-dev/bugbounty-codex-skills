@@ -1,0 +1,4 @@
+interface:
+  display_name: "Clickjacking"
+  short_description: "UI redress and frame abuse testing"
+  default_prompt: "Use $clickjacking to map clickjacking risk across the provided pages, auth flows, or UI actions."

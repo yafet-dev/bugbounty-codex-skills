@@ -1,0 +1,4 @@
+interface:
+  display_name: "RCE"
+  short_description: "Remote code execution testing"
+  default_prompt: "Use $rce to map code execution risk across the provided endpoints, uploads, jobs, or artifacts."
