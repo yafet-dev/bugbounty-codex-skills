@@ -1,0 +1,4 @@
+interface:
+  display_name: "WAF Parser Differentials"
+  short_description: "Find WAF and parser normalization gaps"
+  default_prompt: "Use $waf-parser-differentials to map an authorized request parsing chain and verify a suspected validation bypass."

@@ -8,6 +8,7 @@ Use this reference to plan a thorough ATO assessment. The goal is to identify wh
 - Flow inventory
 - Token and binding analysis
 - Test matrix
+- Password-reset host poisoning
 - Provider-specific checks
 - Cache, proxy, and request-smuggling checks
 - Mobile and desktop app handoff checks
@@ -77,7 +78,47 @@ Run the matrix across high-impact flows:
 | Mobile handoff | Capture, inject, or replay auth results through deeplinks, intents, or WebViews |
 | IDOR-to-ATO | Change member ID, email ID, profile ID, token ID, invite ID, or user record |
 
-## 5. Provider-specific checks
+## 5. Password-reset host poisoning
+
+Use this playbook when the application sends an absolute recovery link and the program authorizes testing the recovery workflow. Check whether the program separately excludes host-header or email-hyperlink injection before testing and report technical impact separately from reward eligibility. Use accounts and inboxes you control unless the program explicitly permits testing another account. Treat DNS, HTTP interaction, and email-preview logs as sensitive because a successful test places a live recovery secret in them.
+
+### Establish the trust path
+
+1. Capture a normal password-reset request and the resulting email or message. Record the reset endpoint, request authority, proxy headers, generated link scheme/host/port/path, token location, redirects, expiry, and single-use behavior.
+2. Identify every client-influenced source from which the application or proxy might construct the link authority: HTTP/1.1 `Host`, HTTP/2 `:authority`, an absolute-form request target, `X-Forwarded-Host`, `Forwarded: host=`, `X-Original-Host`, `X-Forwarded-Proto`, `Forwarded: proto=`, and port forwarding headers. Do not assume the first accepted header is the one used in delivery.
+3. Change one authority source at a time to a unique controlled interaction domain. Keep the victim identifier and other fields unchanged, and compare both the HTTP response and the delivered message with the baseline.
+4. Confirm whether the generated recovery URL points to the controlled origin while retaining a valid-looking token. A reset endpoint returning success is not evidence; the delivered link is the trust decision that matters.
+
+### Prove the chain safely
+
+1. Initiate the poisoned reset for the controlled victim account.
+2. Open the delivered link as the controlled victim would. Verify that the controlled listener receives the request and record only the minimum token evidence needed for the report; redact it everywhere else.
+3. Replace only the poisoned link's scheme and authority with the legitimate canonical origin, preserving the path, query, fragment, and token exactly.
+4. In a clean session, test whether the legitimate reset endpoint accepts the captured token and permits setting a new password. Then verify authentication with the new password and whether existing sessions or recovery links remain valid.
+5. Stop after the minimum proof of account control. Invalidate the token and restore the test account where practical.
+
+The meaningful chain is: untrusted authority input -> server-generated poisoned recovery link -> normal user click leaks the secret -> secret is valid on the canonical origin -> credential reset or equivalent durable control. If any edge is missing, report the narrower demonstrated issue rather than claiming account takeover.
+
+### Variants and negative controls
+
+- Compare direct-origin and reverse-proxy paths; a CDN may reject `Host` while the origin trusts a forwarding header, or vice versa.
+- Test duplicate and conflicting authority headers only when the tooling and program allow raw HTTP ambiguity. Record which hop wins instead of sending broad payload lists.
+- Check whether the same authority source affects magic links, email verification, invitations, OAuth callbacks, tenant links, or other token-bearing absolute URLs.
+- Determine whether email scanners or link-preview services consume or expose the token before the user clicks; distinguish scanner traffic from the controlled victim action.
+- Verify whether the token is bound to its intended account and purpose, but not to the attacker-controlled hostname. Host binding can be defense in depth; the primary fix is never deriving security-sensitive destinations from untrusted request metadata.
+- Use a baseline reset after testing to rule out coincidental token validity, cached email content, or reuse of a prior link.
+
+### Evidence to retain
+
+- The baseline request and legitimate delivered URL, with secrets redacted.
+- The single changed authority input and the poisoned delivered URL.
+- A controlled-listener interaction showing the path/query reached the attacker-controlled origin.
+- The canonical-origin replay and server response that allowed the password change.
+- A clean-session login or equivalent proof of durable control, plus token expiry/reuse observations.
+
+Do not overstate findings where the message rewrites the visible link but not the actual destination, the controlled listener never receives the token, the token is rejected on the canonical origin, or the only affected account is not recoverable or usable.
+
+## 6. Provider-specific checks
 
 OAuth/OIDC:
 
@@ -108,7 +149,7 @@ Passwordless and magic links:
 - Invalidate old links after resend, email change, password change, factor change, and successful use.
 - Keep links out of third-party redirects, previews, logs, analytics, and referers.
 
-## 6. Cache, proxy, and request-smuggling checks
+## 7. Cache, proxy, and request-smuggling checks
 
 Review edge behavior when auth material appears in responses:
 
@@ -120,7 +161,7 @@ Review edge behavior when auth material appears in responses:
 - Request smuggling or desync that can make another user's response include attacker-controlled content or leak cookies.
 - Cache poisoning that stores XSS or redirects on authenticated paths.
 
-## 7. Mobile and desktop app handoff checks
+## 8. Mobile and desktop app handoff checks
 
 Review native auth edges:
 
@@ -132,7 +173,7 @@ Review native auth edges:
 - Hardcoded client secrets, provider endpoints, feature flags, or recovery APIs in app bundles.
 - Browser-to-app and app-to-browser transitions that lose state, nonce, tenant, or session binding.
 
-## 8. Confirmation rules
+## 9. Confirmation rules
 
 Strong ATO evidence shows control, not just reachability:
 
@@ -152,7 +193,7 @@ Rule out false positives:
 - Tokens expire quickly, are single-use, and invalidate on account-control changes.
 - Sessions rotate and old sessions die on sensitive changes.
 
-## 9. Impact ranking
+## 10. Impact ranking
 
 Rank risk by control depth, victim interaction, scale, and prerequisites:
 
@@ -161,9 +202,10 @@ Rank risk by control depth, victim interaction, scale, and prerequisites:
 - Medium: partial account control, unverified-account takeover with meaningful actions, session persistence after sensitive changes, or control requiring rare victim state.
 - Low: weak pre-account takeover without sensitive access, self-account-only issues, or findings that require unrealistic external secret disclosure.
 
-## 10. Developer remediation checklist
+## 11. Developer remediation checklist
 
 - Bind every auth token, reset token, magic link, OAuth state, nonce, and auth code to the intended user, session, client, tenant, purpose, and redirect destination.
+- Build security-sensitive absolute URLs from a server-side canonical origin. Reject unexpected `Host` values at the edge, overwrite rather than append trusted proxy forwarding headers, and allowlist forwarded hosts only from known proxies.
 - Invalidate sensitive tokens and sessions after password, email, phone, 2FA, linked-account, SSO, and recovery-factor changes.
 - Enforce exact redirect URI matching and reject open-redirect chains in auth callbacks.
 - Verify OAuth/OIDC token signature, issuer, audience, expiry, nonce, email verification, and client identity server-side.
