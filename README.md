@@ -52,6 +52,7 @@ Each skill lives under `bug-type-skills/<skill-name>/`:
 | `ssti` | Server-side template injection, expression evaluation, sandbox escape, email/template editors, and rendering pipelines. |
 | `subdomain-takeover` | Dangling DNS, cloud service claims, takeover-to-auth-bypass chains, and domain trust abuse. |
 | `web-cache` | Cache deception, cache poisoning, CORS/cache interaction, sensitive response caching, and stored payload delivery. |
+| `waf-parser-differentials` | WAF, proxy, framework, and sink parsing disagreements involving encodings, charsets, structured bodies, duplicate parameters, and URL normalization. |
 | `xss` | Reflected, stored, DOM, blind, CSP bypass, token theft, admin-context payloads, and account-impacting XSS chains. |
 | `xxe` | XML external entity issues, parser configuration, file disclosure, SSRF, blind exfiltration, and XML upload/import surfaces. |
 

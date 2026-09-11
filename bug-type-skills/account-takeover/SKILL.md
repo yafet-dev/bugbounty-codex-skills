@@ -16,7 +16,7 @@ Use public case lessons as prioritization signals, not as a fixed recipe. Choose
 Prioritize workflows where account identity, credentials, recovery, sessions, or federated trust are changed or consumed:
 
 - Session and token possession: leaked cookies, auth tokens in URLs, cacheable authenticated pages, token reuse, weak session rotation, cookie parsing quirks, cookie domain/path mistakes, and session fixation.
-- Password reset and recovery: reset token generation, token reuse, token invalidation, race conditions, email/phone ownership checks, magic links, passwordless signup, OTP/SMS flows, and recovery-channel changes.
+- Password reset and recovery: reset token generation, token reuse, token invalidation, race conditions, email/phone ownership checks, Host/forwarded-host trust in absolute reset URLs, magic links, passwordless signup, OTP/SMS flows, and recovery-channel changes.
 - OAuth/OIDC/social login: redirect URI validation, state and nonce binding, callback host handling, token audience/client validation, linked account CSRF, missing email verification, Google/Apple/OneTap flows, and mobile OAuth handoff.
 - CSRF and click-driven identity changes: email change, password change, security questions, 2FA setup/reset, linked accounts, API keys, invite acceptance, and account deletion or restoration.
 - XSS-to-ATO chains: cookie/token theft, login keylogging, stored XSS in trusted subdomains, CSP bypasses, token-bearing postMessage flows, and XSS on OAuth or payment/auth surfaces.
@@ -40,7 +40,7 @@ Prioritize workflows where account identity, credentials, recovery, sessions, or
 
 | Family | Look for | Ask |
 | --- | --- | --- |
-| Password reset | reset token, code, email, phone, user ID, callback URL, resend endpoint | Can A reset or consume B's recovery flow without B completing it? |
+| Password reset | reset token, code, email, phone, user ID, callback URL, Host/forwarded-host input, resend endpoint | Can A redirect B's reset secret to an attacker-controlled origin, capture it through the normal delivery flow, and replay it on the legitimate origin? |
 | Session/token | `Set-Cookie`, JWT, refresh token, remember-me, auth URL, CSRF token | Can A obtain, reuse, fix, cache, or keep B's authenticated state? |
 | OAuth/OIDC | `redirect_uri`, `state`, `nonce`, `code`, `client_id`, `aud`, `iss`, callback host | Are callback, user identity, and token audience bound to the right session and client? |
 | Linked accounts | Google/Apple/Facebook/GitHub link, unlink, merge, invite, account claim | Can A bind their identity provider to B's account or pre-bind B's email? |
@@ -58,6 +58,7 @@ Prioritize workflows where account identity, credentials, recovery, sessions, or
 - Race paired flows: attacker and victim password reset, two email changes, simultaneous OTP verification, magic-link resend, account linking, and SSO join.
 - Mismatch trust data: attacker session with victim email, victim token with attacker callback, attacker OAuth state with victim browser, wrong `client_id`, wrong `aud`, wrong tenant, or altered Host header.
 - Probe redirect and callback handling: exact match, scheme changes, subdomain tricks, path confusion, double encoding, fragment handling, open redirects, and mobile custom schemes.
+- Trace server-generated recovery URLs to their source of scheme and authority. Compare `Host`, absolute-form request targets, and proxy forwarding headers such as `X-Forwarded-Host` only where authorized; verify the actual email or message rather than inferring behavior from the reset request response.
 - Check cookie and session semantics: rotation after login/reset, domain/path scope, HttpOnly/Secure/SameSite, duplicate cookie parsing, subdomain cookie injection, and remember-me invalidation.
 - Review cache and proxy behavior: private data cached publicly, missing `Vary: Cookie`, cache key confusion, cacheable CSRF pages, proxy normalization differences, and smuggling-induced response mixups.
 - Inspect mobile and client bundles for auth endpoints, deeplink routes, embedded client IDs, postMessage origins, feature flags, hidden recovery APIs, and provider configuration.
@@ -87,4 +88,4 @@ Rule out weak findings:
 
 ## References
 
-Read `references/advanced-methodology.md` only when the task needs a deeper identity matrix, auth-flow inventory, provider-specific checks, cache/proxy review, mobile handoff review, confirmation checklist, impact ranking, or remediation checklist.
+Read `references/advanced-methodology.md` only when the task needs a deeper identity matrix, auth-flow inventory, password-reset host poisoning playbook, provider-specific checks, cache/proxy review, mobile handoff review, confirmation checklist, impact ranking, or remediation checklist.

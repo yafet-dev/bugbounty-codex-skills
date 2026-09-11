@@ -21,7 +21,7 @@ Treat file-read bugs as boundary failures between user input and filesystem, URL
 
 1. Find path-like inputs: filename, URL, attachment, import, export, template, archive entry, image metadata, PDF HTML, and callback fields.
 2. Determine parser and namespace: server FS, container FS, client FS, cloud metadata, renderer sandbox, or storage bucket.
-3. Test normalization differences: encoded traversal, mixed separators, absolute paths, symlinks, archive paths, and URL schemes.
+3. Test normalization differences: encoded traversal, mixed separators, absolute paths, symlinks, archive paths, URL schemes, and application-decoded transport formats when the client or endpoint indicates they are supported.
 4. Confirm with low-risk known files or controlled markers before sensitive targets.
 5. Assess impact by reachable secrets, credentials, source code, configs, tokens, and cross-tenant files.
 
@@ -38,6 +38,7 @@ Treat file-read bugs as boundary failures between user input and filesystem, URL
 ## Variant Playbook
 
 - Try `../`, encoded traversal, double encoding, mixed slash/backslash, absolute paths, null-like suffixes, and path prefix tricks.
+- Where the application expects an encoded value, compare the exact same benign path in raw, Base64, Base64url, or other observed transport forms. Track decoding before path normalization; a `403` to `200` change alone does not prove a file read.
 - Test symlinks, zip/tar entries, nested archives, long names, Unicode normalization, and Windows drive paths.
 - Test renderer inputs: HTML `iframe/img/link`, SVG external entities, CSS `url()`, PDF conversion, and metadata.
 - Compare web, mobile, desktop, worker, and export services.
@@ -49,4 +50,4 @@ Strong evidence shows file contents or a controlled marker from outside the inte
 
 ## References
 
-Read `references/advanced-methodology.md` only when the task needs deeper traversal, archive, renderer, SSRF-to-file, client-app, container, confirmation, or remediation checks.
+Read `references/advanced-methodology.md` only when the task needs deeper traversal, application-decoded transport and canonicalization checks, archive, renderer, SSRF-to-file, client-app, container, confirmation, or remediation checks.

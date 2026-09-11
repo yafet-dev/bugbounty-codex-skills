@@ -39,7 +39,7 @@ Treat SQLi as query-structure control. Identify which input affects SQL syntax, 
 
 - Test strings, numbers, arrays, repeated parameters, JSON values, sort/order fields, and headers.
 - Compare boolean true/false, syntax error, time delay, and out-of-band behavior.
-- Test encoded payloads, comment styles, database-specific syntax, and type confusion.
+- Test transport-encoded inputs only when the application or client decodes them before query construction; compare equivalent raw and decoded values, comment styles, database-specific syntax, and type confusion.
 - Check stored inputs later rendered in reports, exports, admin search, or background jobs.
 
 ## Confirmation Discipline
@@ -48,4 +48,4 @@ Strong evidence shows controlled SQL logic, timing, error, data extraction, file
 
 ## References
 
-Read `references/advanced-methodology.md` only when the task needs deeper query-surface inventory, blind SQLi confirmation, second-order checks, SQLi-to-RCE/file-read review, or remediation guidance.
+Read `references/advanced-methodology.md` only when the task needs deeper query-surface inventory, application-decoded input checks, blind SQLi confirmation, second-order checks, SQLi-to-RCE/file-read review, or remediation guidance.

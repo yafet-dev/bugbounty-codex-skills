@@ -40,6 +40,7 @@ Treat SSTI as server-side expression evaluation. Identify the template engine, w
 - Try engine-specific harmless markers for Jinja, Twig, Smarty, ERB, Ruby, Java, and JavaScript engines.
 - Test reflected and stored contexts separately.
 - Compare plain text, HTML, Markdown, email, PDF, and CMS preview renderers.
+- When the client or endpoint supports Base64 or another wrapped representation, encode equivalent harmless marker expressions and trace whether decoding happens before template rendering. Do not infer SSTI from a filter status change.
 - Look for include/template-name/path controls and theme upload paths.
 - Escalate only after confirming engine and context.
 
@@ -49,4 +50,4 @@ Strong evidence shows server-side expression evaluation and meaningful access be
 
 ## References
 
-Read `references/advanced-methodology.md` only when the task needs deeper engine fingerprinting, stored/render context review, sandbox escape analysis, confirmation, or remediation guidance.
+Read `references/advanced-methodology.md` only when the task needs deeper engine fingerprinting, application-decoded input checks, stored/render context review, sandbox escape analysis, confirmation, or remediation guidance.
