@@ -11,6 +11,10 @@ Treat authentication bugs as failures to prove identity, bind identity to a sess
 
 Use public case lessons as prioritization signals, not as a fixed recipe. Choose inspection methods from the user's artifacts and target type. Do not narrow the skill to web login forms; include APIs, mobile apps, SSO, VPNs, admin panels, appliances, CI logs, and infrastructure services.
 
+## Report-Derived Starting Point
+
+Draw the login and recovery state machine before testing. Successful reports look for a route that reaches an authenticated state without completing the same assurance checks as the normal route, then prove the result in a fresh session.
+
 ## Priority Patterns
 
 Prioritize auth flows that decide who the caller is or whether the caller is allowed past a gate:

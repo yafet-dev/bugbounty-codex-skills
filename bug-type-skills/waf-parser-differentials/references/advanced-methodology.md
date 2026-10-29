@@ -2,6 +2,19 @@
 
 Use this reference to investigate authorized cases where a control and downstream application assign different meaning to the same request.
 
+## Start here: how hunters found this in real reports
+
+1. **Name the two interpreters.** Examples: CDN versus origin, WAF versus JSON parser, framework router versus proxy, or validator versus URL client.
+2. **Build four controls.** Use a normal accepted request, a normal rejected request, a suspicious request that should be blocked, and a harmless value shaped like the suspicious one.
+3. **Change one representation.** Test a single difference in encoding, duplicate fields, case, whitespace, content type, charset, path delimiter, or nesting.
+4. **Observe both decisions.** The useful signal is “the guard saw A while the backend acted on B,” not merely a different status code.
+5. **Reduce the mutation.** Remove every unnecessary character until the smallest stable disagreement remains, then rebuild only enough to reach a controlled sink.
+6. **Prove the underlying bug.** A bypass matters only when it reaches a real injection, routing, cache, authorization, or validation flaw.
+
+### Expand the pattern
+
+Automate only after a manual differential is stable. Report the parser disagreement and backend consequence so defenders can fix canonicalization or reject ambiguous input.
+
 ## 1. Parser ledger
 
 Create a ledger before mutating requests:
@@ -100,16 +113,16 @@ Automation should reproduce a hypothesis, not replace parser analysis.
 | URL validation | Intended and actual destination differ after all parsers |
 | Cache | Explicit cache-key/hit evidence using a unique non-shared test object or cache buster |
 
-A generic `200`, different response length, timeout, or absent WAF banner is not sufficient.
+A generic `200`, response-length change, timeout, or absent WAF banner is one observation. Pair it with exact request bytes, stable controls, and parser evidence so the reported capability is reproducible.
 
 ## 8. Reporting
 
-Report two linked facts:
+Report the observed capabilities clearly and follow the program's rules on whether they belong together or separately:
 
-1. Root cause and impact: the downstream sink consumes attacker-controlled meaning unsafely.
-2. Control differential: the WAF, proxy, validator, or sanitizer interpreted the request differently and therefore did not mitigate the root flaw.
+1. Control differential: the WAF, proxy, validator, or sanitizer interpreted the request differently.
+2. Downstream behavior, when present: the final sink consumed attacker-controlled meaning in a security-relevant way.
 
-Include a parser diagram or ledger, exact equivalent controls, the smallest successful transformation, negative controls, final sink evidence, affected stack assumptions, and a bounded impact statement. Avoid claiming a universal vendor bypass from one configuration.
+Include a parser diagram or ledger, exact equivalent controls, the smallest successful transformation, negative controls, any final-sink evidence, affected stack assumptions, and a bounded impact statement. Avoid claiming a universal vendor bypass from one configuration.
 
 ## 9. Remediation
 
@@ -122,17 +135,17 @@ Include a parser diagram or ledger, exact equivalent controls, the smallest succ
 - Keep decoded SQL values parameterized, decoded template values as data, paths mapped from identifiers, URLs parsed once with an allowlist, and browser output encoded for its final context.
 - Regression-test both the root sink and the representation that crossed the defensive layer.
 
-## 10. Ten-source research synthesis
+## 10. Lessons extracted from prior research
 
 The workflow above synthesizes recurring lessons from these original researcher write-ups without copying their payload lists:
 
-1. [RCE via Spring error-page SSTI with WAF bypass](https://www.pmnh.site/post/writeup_spring_el_waf_bypass/) - build complex proofs upward from small expressions known to work in the identified engine.
-2. [Real-case SQLi character-encoding bypass](https://wetofu.github.io/blog/2024/07/06/real-case---bypass-sql-injection-using-character-encoding-and-sqlmap-tamper/) - use response differentials to isolate accepted syntax, then automate the proven transformation.
-3. [JSON Unicode escape WAF bypass](https://trustfoundry.net/blog/bypassing-wafs-with-json-unicode-escape-sequences) - inspect the actual structured parser and adapt automation only after manually confirming decoded equivalence.
-4. [Industry-leading WAF and blind SQLi](https://blog.stratumsecurity.com/2023/06/01/sqli-the-road-to-bypassing-an-industry-leading-waf/) - reduce the blocked expression atom by atom and confirm with controlled timing or result behavior.
-5. [Jinja2 SSTI methodology](https://onsecurity.io/article/server-side-template-injection-with-jinja-2-for-you/) - use language-native literals, filters, and reconstruction only after fingerprinting the template engine.
-6. [JavaScript injection through parameter pollution](https://blog.ethiack.com/blog/bypassing-wafs-for-fun-and-js-injection-with-parameter-pollution) - fingerprint duplicate-parameter recombination and the final JavaScript grammar.
-7. [URL validation bypass research](https://portswigger.net/research/introducing-the-url-validation-bypass-cheat-sheet) - select mutations for the exact URL context and parser rather than using one universal URL list.
-8. [Cache and origin path parser discrepancies](https://portswigger.net/research/gotta-cache-em-all) - use baselines, random suffixes, delimiters, cache busters, and hit evidence to distinguish each parser.
-9. [JavaScript framework parser abuse](https://portswigger.net/research/abusing-javascript-frameworks-to-bypass-xss-mitigations) - understand framework-specific URL and expression semantics that generic mitigations do not model.
-10. [Request charset encoding against WAFs](https://soroush.me/downloadable/request-encoding-to-bypass-web-application-firewalls.pdf) - test request-body charsets only where the server stack decodes them and enforce a narrow charset policy defensively.
+1. RCE via Spring error-page SSTI with WAF bypass - build complex proofs upward from small expressions known to work in the identified engine.
+2. Real-case SQLi character-encoding bypass - use response differentials to isolate accepted syntax, then automate the proven transformation.
+3. JSON Unicode escape WAF bypass - inspect the actual structured parser and adapt automation only after manually confirming decoded equivalence.
+4. Industry-leading WAF and blind SQLi - reduce the blocked expression atom by atom and confirm with controlled timing or result behavior.
+5. Jinja2 SSTI methodology - use language-native literals, filters, and reconstruction only after fingerprinting the template engine.
+6. JavaScript injection through parameter pollution - fingerprint duplicate-parameter recombination and the final JavaScript grammar.
+7. URL validation bypass research - select mutations for the exact URL context and parser rather than using one universal URL list.
+8. Cache and origin path parser discrepancies - use baselines, random suffixes, delimiters, cache busters, and hit evidence to distinguish each parser.
+9. JavaScript framework parser abuse - understand framework-specific URL and expression semantics that generic mitigations do not model.
+10. Request charset encoding against WAFs - test request-body charsets only where the server stack decodes them and enforce a narrow charset policy defensively.

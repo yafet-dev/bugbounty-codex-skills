@@ -9,6 +9,10 @@ description: Advanced subdomain takeover testing methodology for bug bounty and 
 
 Treat subdomain takeover as trusted-origin control. The impact depends on what the parent product trusts from that host: cookies, redirects, OAuth callbacks, CORS, scripts, users, or brand trust.
 
+## Report-Derived Starting Point
+
+Prove three separate facts: the hostname still points to a provider, the exact resource can be claimed within policy, and the parent organization trusts the hostname. The last step—cookies, OAuth, CORS, CSP, or brand trust—usually determines real impact.
+
 ## Priority Patterns
 
 - Dangling DNS to cloud/CDN/app platforms.

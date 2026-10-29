@@ -9,6 +9,10 @@ description: Advanced clickjacking and UI redress testing methodology for bug bo
 
 Treat clickjacking as user-intent confusion. Test whether a sensitive action can be triggered while the user believes they are interacting with something else.
 
+## Report-Derived Starting Point
+
+Work backward from a meaningful victim action. A frameable page matters only when the victim can be guided into a small, believable click sequence that creates a visible security or business effect.
+
 ## Priority Patterns
 
 - OAuth grants, app authorization, login consent, and linked-account flows.

@@ -9,6 +9,10 @@ description: Advanced cross-site scripting testing methodology for bug bounty an
 
 Treat XSS as execution context control. Identify source, sink, parser, encoding layer, trust boundary, and victim context before judging impact.
 
+## Report-Derived Starting Point
+
+Start with the rendering context and data flow, not a payload list. Track input into HTML, attributes, JavaScript, URLs, templates, and DOM sinks, then use the smallest harmless execution proof and check whether a higher-privilege viewer receives it.
+
 ## Priority Patterns
 
 - Stored XSS in profiles, wiki pages, comments, chats, admin dashboards, uploads, and cached pages.
@@ -18,7 +22,9 @@ Treat XSS as execution context control. Identify source, sink, parser, encoding 
 - File/content XSS through SVG, images, PDFs, Markdown, HTML sanitizers, and filename rendering.
 - Cache poisoning to stored XSS and privileged/admin-context XSS.
 
-## Assessment Loop
+## How to Hunt for XSS
+
+Use this workflow before choosing a variant or payload family:
 
 1. Inventory sources and sinks: visible and hidden parameters, body fields, headers, cookies, stored content, files, postMessage, cache, page source, scripts, and observed requests.
 2. Send a unique harmless canary through one candidate input at a time; locate it in both the raw response and the rendered DOM, and record decoding or normalization.
@@ -26,6 +32,10 @@ Treat XSS as execution context control. Identify source, sink, parser, encoding 
 4. Test minimal context breakers before executable payloads; compare literal, percent-encoded, and application-normalized forms only where authorized.
 5. Check sanitization, encoding, WAF/backend disagreement, CSP, Trusted Types, and browser-specific behavior.
 6. Confirm execution in the intended victim context and assess reachable secrets/actions.
+7. Establish a realistic delivery path from the controlled attacker to a separate controlled viewer; for POST responses, preserve the required method, body, cookies, headers, CSRF state, and user actions.
+8. Follow stored input into second-order viewers such as staff tools, exports, email previews, PDF renderers, mobile WebViews, and cached pages.
+9. Demonstrate the smallest harmless capability in the intended origin and record the baseline, negative control, rendered DOM, browser policy, role, tenant, and final observable.
+10. Search sibling fields and routes that reuse the same renderer, sanitizer, template, or DOM sink, and group shared root causes according to program rules.
 
 ## High-Value Cues
 
@@ -43,7 +53,7 @@ Treat XSS as execution context control. Identify source, sink, parser, encoding 
 
 - Test context-specific escaping, nested parsers, double decoding, template interpolation, and sanitizer mutation.
 - Build a target-specific parameter corpus from authorized pages, scripts, forms, routes, and captured traffic. Replay likely parameters individually against related endpoints with unique canaries and bounded request rates.
-- Compare baseline, literal delimiter probes, URL encoding, and application-supported wrappers such as Base64 only when evidence identifies the corresponding decode stage. An accepted request or WAF bypass is not XSS until the browser reaches an executable sink.
+- Compare baseline, literal delimiter probes, URL encoding, and application-supported wrappers such as Base64 only when evidence identifies the corresponding decode stage. Trace every accepted representation through application decoding and record the resulting browser behavior in the intended origin and viewer context.
 - Compare web/mobile, old browsers, CSP variants, and admin rendering.
 - Test SVG/Markdown/HTML/filename/metadata and uploaded previews.
 - Probe postMessage origin checks and JSON parsing.

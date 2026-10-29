@@ -9,6 +9,10 @@ description: Advanced CSRF testing methodology for bug bounty and application se
 
 Treat CSRF as a confused-browser problem: the browser supplies credentials, while the server fails to verify user intent and request origin for a state-changing action.
 
+## Report-Derived Starting Point
+
+Prioritize actions that bind identity, money, integrations, or recovery details. First prove a browser can send an accepted cross-site request, then verify the victim account changed; a missing token alone is not a finding.
+
 ## Priority Patterns
 
 - Linked accounts, OAuth grants, payment provider connections, integrations, and webhooks.

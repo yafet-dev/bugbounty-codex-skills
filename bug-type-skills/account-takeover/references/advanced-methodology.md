@@ -16,6 +16,19 @@ Use this reference to plan a thorough ATO assessment. The goal is to identify wh
 - Impact ranking
 - Developer remediation checklist
 
+## Start here: how hunters found this in real reports
+
+1. **Choose an identity-changing feature.** Start with reset, recovery, email change, phone change, account linking, OAuth, invitations, or session management.
+2. **Write the security promise.** Example: “Only a person who controls the old factor may attach a new login method.”
+3. **Follow every handoff.** Track the request, email or deep link, redirect, token exchange, account lookup, and final session creation. Ask what each step assumes the previous one proved.
+4. **Challenge one binding at a time.** Swap the user, email, provider identity, client, redirect target, tenant, token order, or browser session while holding everything else constant.
+5. **Look for the helper bug.** Many takeover reports used a second primitive—an open redirect, unverified email, stale session, weak callback check, cache mix-up, or linking CSRF—to finish the chain.
+6. **Prove the result cleanly.** Use two controlled accounts and a fresh browser. The proof is that the attacker session reaches the victim account, not that a token or error looked unusual.
+
+### Expand the pattern
+
+After one broken flow is found, test the same identity binding in mobile, old API versions, support tools, invitations, SSO, and recovery. Stop once controlled account access is proven; do not touch unrelated users or persist access.
+
 ## 1. Identity and asset matrix
 
 Track identities and states before testing:

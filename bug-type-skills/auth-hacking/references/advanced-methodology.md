@@ -18,6 +18,19 @@ Use this reference to plan a thorough authentication security assessment. The go
 - Impact ranking
 - Developer remediation checklist
 
+## Start here: how hunters found this in real reports
+
+1. **Draw the states.** Mark anonymous, password accepted, factor pending, fully authenticated, recovered, suspended, and reauthenticated.
+2. **List every path into each state.** Include normal login, magic link, password reset, SSO, mobile login, invitations, remembered devices, support recovery, and old sessions.
+3. **Compare the gates.** Ask whether each path checks the same email ownership, factor, tenant, lockout, and reauthentication requirements.
+4. **Break the expected order.** Reuse an earlier token, skip a step, finish in another browser, change the account mid-flow, or call the final endpoint directly.
+5. **Check session creation and retirement.** A flow may protect login yet leave old sessions valid, issue a high-assurance session too early, or fail to revoke a session after a security change.
+6. **Prove a state transition.** In a clean controlled session, show access to a page or action that should require the missing proof.
+
+### Expand the pattern
+
+Repeat the winning sequence through mobile, API, desktop, and SSO paths. Authentication findings are strongest when the exact missing assurance step and the resulting account capability are both demonstrated.
+
 ## 1. Auth surface inventory
 
 Collect auth surfaces from:

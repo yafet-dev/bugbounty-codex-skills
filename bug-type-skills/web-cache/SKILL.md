@@ -9,6 +9,10 @@ description: Advanced web cache poisoning and cache deception testing methodolog
 
 Treat cache bugs as key confusion: the cache and origin disagree about which request variants produce distinct responses or whether a response is private.
 
+## Report-Derived Starting Point
+
+Separate what the cache keys from what the origin uses. Use unique paths and clean sessions to prove a response created by one controlled request is served to another; never infer poisoning from headers alone.
+
 ## Priority Patterns
 
 - Cache poisoning: Host, Origin, headers, path, query, language, and protocol values stored into shared responses.

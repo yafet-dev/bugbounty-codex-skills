@@ -9,6 +9,10 @@ description: Advanced mobile application security testing methodology for bug bo
 
 Treat mobile apps as client, transport, local storage, and backend API surfaces at once. Test what the app trusts locally and what the backend trusts from the app.
 
+## Report-Derived Starting Point
+
+Trace a mobile feature from deep link or app component to the backend action. The highest-value findings occur when the server trusts a claim enforced only by the app, or when links and exported components let another app reach a privileged flow.
+
 ## Priority Patterns
 
 - Deeplink and intent abuse: CSRF, auth token capture, account takeover, host validation bypass, and app-link confusion.

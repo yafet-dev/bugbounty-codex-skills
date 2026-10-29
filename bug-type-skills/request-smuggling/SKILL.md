@@ -9,6 +9,10 @@ description: Advanced HTTP request smuggling and desync testing methodology for 
 
 Treat request smuggling as parser disagreement between intermediaries and origin. The impact comes from what boundary the desync crosses: session, cache, routing, auth, internal endpoint, or another user's response.
 
+## Report-Derived Starting Point
+
+First prove a front end and back end disagree using a harmless canary. Then search the affected connection for a second application behavior—redirects, cacheable responses, or routing—that turns desynchronization into controlled victim impact.
+
 ## Priority Patterns
 
 - Token/session theft through response queue poisoning.

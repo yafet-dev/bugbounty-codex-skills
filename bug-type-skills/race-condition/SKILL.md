@@ -9,6 +9,10 @@ description: Advanced race condition testing methodology for bug bounty and appl
 
 Treat race conditions as state-transition failures. Test whether two or more valid requests executed close together can bypass uniqueness, locking, idempotency, or workflow ordering.
 
+## Report-Derived Starting Point
+
+Establish a sequential baseline, send a small synchronized duplicate, and inspect the durable result. Real reports became valid when two success responses produced two credits, redemptions, payouts, or forbidden states that survived reconciliation.
+
 ## Priority Patterns
 
 - Value duplication: gift cards, coupons, credits, refunds, rewards, balances, and payouts.

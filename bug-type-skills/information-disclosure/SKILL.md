@@ -9,6 +9,10 @@ description: Advanced information disclosure testing methodology for bug bounty 
 
 Treat information disclosure as an audience mismatch: data intended for one user, role, tenant, environment, or internal system is exposed to another.
 
+## Report-Derived Starting Point
+
+Create an audience matrix for each sensitive field, then look for replicas in search, exports, email, notifications, logs, previews, caches, and nested APIs. Prove the value is both sensitive and outside the observer's intended audience.
+
 ## Priority Patterns
 
 - User data: email, phone, address, private profile, read status, resumes, tickets, tax docs, billing, and private content.

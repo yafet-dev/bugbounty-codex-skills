@@ -9,6 +9,10 @@ description: Advanced denial-of-service testing methodology for bug bounty and a
 
 Treat DoS as asymmetry: a small attacker-controlled input causes disproportionate service, user, cache, quota, or workflow disruption.
 
+## Report-Derived Starting Point
+
+Look for one cheap input that causes expensive fan-out: deep queries, conversions, recursive work, repeated provider calls, or unbounded jobs. Keep tests tiny and use timing, job counts, or resource deltas to show amplification without causing disruption.
+
 ## Priority Patterns
 
 - Cache poisoning: poisoned CORS, Host, language, path, query, or header variants deny service to many users.

@@ -11,6 +11,10 @@ Treat IDOR as an object/action authorization failure, not as a simple parameter 
 
 Use public case lessons as prioritization signals, not as a fixed recipe. Choose inspection methods from the user's artifacts and target type. Do not narrow the skill to one artifact type or extraction routine.
 
+## Report-Derived Starting Point
+
+Use two controlled users and unmistakable objects. Change only the object reference, then check read, edit, delete, share, export, and lifecycle operations across every client; the strongest proof is the victim object changing or leaking.
+
 ## Priority Patterns
 
 Prioritize business impact over obvious URLs. Focus first on object references attached to high-impact workflows:

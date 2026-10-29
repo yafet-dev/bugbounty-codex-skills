@@ -11,6 +11,10 @@ Treat ATO as a control-plane failure: an attacker gains durable control of an ac
 
 Use public case lessons as prioritization signals, not as a fixed recipe. Choose inspection methods from the user's artifacts and target type. Do not narrow the skill to one artifact type, one login provider, or one exploit chain.
 
+## Report-Derived Starting Point
+
+Begin with an identity-changing feature, then follow every handoff until a clean browser is logged in as the controlled victim. Strong reports usually combine a small weakness in recovery, linking, redirect handling, or session binding with a second feature that turns it into account control.
+
 ## Priority Patterns
 
 Prioritize workflows where account identity, credentials, recovery, sessions, or federated trust are changed or consumed:

@@ -9,6 +9,10 @@ description: Advanced SQL injection testing methodology for bug bounty and appli
 
 Treat SQLi as query-structure control. Identify which input affects SQL syntax, logic, timing, errors, or backend query behavior, then confirm with minimal, bounded evidence.
 
+## Report-Derived Starting Point
+
+Follow user-controlled values into query construction, especially arrays, report builders, stored metadata, headers, and admin views. Use paired true/false or timing controls and confirm the same sink repeatedly before considering impact.
+
 ## Priority Patterns
 
 - Search, filters, reports, dashboards, analytics, admin lists, and CSV/JSON conversion.
@@ -44,7 +48,7 @@ Treat SQLi as query-structure control. Identify which input affects SQL syntax, 
 
 ## Confirmation Discipline
 
-Strong evidence shows controlled SQL logic, timing, error, data extraction, file access, or execution path. Rule out generic errors, WAF blocks, and response differences unrelated to query behavior.
+Capture controlled SQL logic, timing, error, data extraction, file access, or execution-path evidence. Record WAF decisions, generic errors, and other response differences separately so the researcher can distinguish control-layer behavior from database behavior and apply the program's rules to each.
 
 ## References
 
