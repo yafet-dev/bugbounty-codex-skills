@@ -18,6 +18,19 @@ Use this reference to plan a thorough API security assessment. The goal is to un
 - Impact ranking
 - Developer remediation checklist
 
+## Start here: how hunters found this in real reports
+
+1. **Pick a business action, not an endpoint.** Examples: view an invoice, change a role, export a project, redeem credit, or invite a member.
+2. **Find every route to that action.** Compare web, mobile, GraphQL, REST versions, bulk routes, imports, exports, webhooks, and background jobs.
+3. **Create a small identity matrix.** Use two controlled users, two tenants, two roles, and objects with easy-to-recognize values.
+4. **Replay the same action with one changed fact.** Change only the object ID, owner, tenant, role, field, content type, or lifecycle state.
+5. **Inspect what the client normally hides.** Add omitted fields, old fields, nested objects, and model properties supported by the server but absent from the current UI.
+6. **Verify final state.** Read the other account, audit log, exported file, notification, or downstream job. Status codes and echoed JSON are not enough.
+
+### Expand the pattern
+
+When one surface fails, test equivalent actions everywhere else. The reusable lesson from strong reports is usually “this route skipped a business or authorization invariant,” not “this exact endpoint was vulnerable.”
+
 ## 1. API inventory
 
 Collect API surfaces from:

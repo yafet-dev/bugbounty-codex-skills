@@ -9,6 +9,10 @@ description: Advanced file read and path traversal testing methodology for bug b
 
 Treat file-read bugs as boundary failures between user input and filesystem, URL fetchers, renderers, archives, containers, or local clients. Identify which file namespace is reachable and whose secrets live there.
 
+## Report-Derived Starting Point
+
+Follow each path-like value through decoding, path joining, storage proxies, renderers, and workers. The useful question is not whether traversal text is accepted, but which filesystem or storage namespace the final component can actually read.
+
 ## Priority Patterns
 
 - Server-side file reads: LFI, path traversal, template includes, PDF/HTML export inclusion, and image/SVG metadata processing.

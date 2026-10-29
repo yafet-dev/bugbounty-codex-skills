@@ -2,6 +2,19 @@
 
 Use this reference to test browser execution boundaries. Perform discovery and fuzzing only on assets and request volumes authorized by the program.
 
+## Start here: how hunters found this in real reports
+
+1. **Locate the exact rendering context.** HTML text, attribute, URL, JavaScript string, JSON-in-script, CSS, template, and DOM sinks require different reasoning.
+2. **Trace source to sink.** Record decoding, sanitization, markdown or template processing, storage, API serialization, and the viewer that finally renders it.
+3. **Use paired probes.** Compare a literal marker with characters meaningful only to that context and inspect the final DOM, not just the raw response.
+4. **Test second-order viewers.** Admin panels, support tools, email previews, exports, mobile WebViews, and shared dashboards may render stored input differently.
+5. **Prove the smallest harmless execution.** Use a controlled marker and avoid cookie theft, destructive actions, or third-party interaction.
+6. **Determine who can reach whom.** Self-XSS, same-role stored XSS, cross-tenant XSS, and staff-view XSS have very different impact.
+
+### Expand the pattern
+
+Once a sink is known, test all fields and transformations feeding it. Report the missing context-specific encoding or unsafe DOM operation rather than a list of payloads.
+
 ## 1. Passive endpoint and parameter discovery
 
 Start with low-impact sources before active parameter testing:
@@ -44,7 +57,7 @@ Treat a WAF decision and an application encoding decision as separate observatio
 - Compare a baseline marker with a small set of context-relevant delimiters in literal and percent-encoded form. Record the exact bytes sent, what each intermediary accepts, and what the browser ultimately parses.
 - Test one transformation at a time: URL decoding, form decoding, HTML entity handling, Unicode normalization, case normalization, or application-specific escaping. Try an additional encoding layer only when the response shows evidence of an additional decode stage.
 - Treat Base64, Base64url, hex, compression, or serialized wrappers as application protocols, not browser encodings. Use them only when frontend code, documentation, or observed traffic indicates a decoder; encode an exact benign delimiter/canary control and trace the decoded value into the final browser context.
-- If the WAF blocks a literal form but accepts an encoded form, verify whether the backend decodes it into dangerous syntax and whether output encoding remains correct. A non-`403` response is not a vulnerability.
+- When literal and encoded forms behave differently, record the exact representation accepted at each layer, the backend-decoded value, output encoding, and final browser interpretation. Preserve the control differential and browser result as separate evidence so the researcher can apply the program's own reporting rules.
 - If a tool generates an obfuscated candidate, decode and understand it before use. Reduce a working result to the smallest context-specific proof so the report identifies the root cause rather than merely presenting a filter-evasion string.
 - Recheck in a real browser with the target's CSP, Trusted Types policy, sanitizer, and client-side transformations active. Raw response text that resembles markup may remain inert.
 

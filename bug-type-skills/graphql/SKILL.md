@@ -9,6 +9,10 @@ description: Advanced GraphQL security testing methodology for bug bounty and ap
 
 Treat GraphQL as a resolver graph, not a single endpoint. Every field, nested object, mutation, alias, and node lookup needs its own authorization, validation, and cost control.
 
+## Report-Derived Starting Point
+
+Compare every equivalent route to the same data: direct node lookup, parent traversal, edges, nodes shortcuts, fragments, REST, and persisted operations. Real reports often find that a helper field or generated resolver returns a different object type and skips field-level filtering.
+
 ## Priority Patterns
 
 - Data leaks: private emails, payment transactions, report metadata, private list members, billing docs, team fields, and nested admin data.

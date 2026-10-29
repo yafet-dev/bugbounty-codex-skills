@@ -1,18 +1,15 @@
 # Bug Bounty Codex Skills
 
-This repository contains Codex skills for bug bounty research workflows. The
-skills are built from patterns observed in the public top HackerOne reports by
-bug type, with the first 50 public list entries used as the main learning set
-for each category when available.
+This repository contains practical Codex skills for authorized bug-bounty
+research. The skills do not merely point to public reports. They extract the
+hunter's reasoning and turn it into a repeatable playbook: what feature to
+choose, what clue to notice, which assumption to challenge, what single change
+to test, how to prove impact safely, and where the same root cause may repeat.
 
-Source list:
-
-- https://github.com/reddelexc/hackerone-reports/blob/master/tops_by_bug_type/
-
-Publicly accessible disclosed reports were used where available. Private,
-removed, unavailable, or non-applicable reports were skipped. The skills
-summarize methodology and recurring vulnerability patterns; they do not copy
-full reports, include exploitation scripts, or include report-writing workflows.
+Every vulnerability-specific skill has a plain-language, report-derived
+starting point in `SKILL.md` and a deeper worked playbook at the top of
+`references/advanced-methodology.md`. Direct report links and reading lists were
+removed from those playbooks so the methodology stands on its own.
 
 ## Structure
 
@@ -22,6 +19,13 @@ Each skill lives under `bug-type-skills/<skill-name>/`:
 - `references/advanced-methodology.md`: deeper testing notes and pattern memory.
 - `agents/openai.yaml`: agent metadata for the skill.
 
+`bug-type-skills/bug-bounty-research/` additionally contains:
+
+- `references/report-derived-patterns.md`: worked examples that turn real reports into reusable hunting methods.
+- `references/hypothesis-led-testing.md`: target modeling, experiment matrices, confirmation ladders, and chain analysis.
+
+`bug-type-skills/elite-bug-bounty-hunting/` is the architecture-driven orchestration skill. It routes among focused references for research refresh, code-to-runtime analysis, identity and authorization, server-side primitives, state and business logic, parser/cache/edge behavior, client-side delivery, exploit-chain validation, and PoC evidence. Its scripts operate only on local researcher-authored ledgers and saved evidence; they do not scan targets.
+
 ## Skills
 
 | Skill | Focus |
@@ -30,10 +34,12 @@ Each skill lives under `bug-type-skills/<skill-name>/`:
 | `api-hacking` | API-specific attack surfaces including exposed APIs, leaked keys, undocumented operations, GraphQL, and mobile/internal API behavior. |
 | `auth-hacking` | Broken authentication, login bypasses, weak session handling, 2FA gaps, and auth flow abuse. |
 | `authorization-bypass` | Privilege escalation, cross-tenant access, role bypass, admin exposure, and object-level access failures. |
+| `bug-bounty-research` | Live report and original-research mining, scope modeling, hypothesis generation, differential experiments, confirmation, and skill routing. |
 | `business-logic` | Workflow abuse, payment/order manipulation, state-machine flaws, reward abuse, and process bypasses. |
 | `clickjacking` | UI redress risks, framing-sensitive actions, OAuth/login consent framing, and account-impacting click paths. |
 | `csrf` | State-changing request forgery, login CSRF, linked-account abuse, token leakage chains, and weak anti-CSRF defenses. |
 | `dos` | Application-layer denial of service, expensive operations, cache poisoning, GraphQL batching, and amplification paths. |
+| `elite-bug-bounty-hunting` | Architecture-adaptive, research-driven hunting for reproducible high-impact vulnerabilities and verified exploit chains, with strict scope and evidence gates. |
 | `file-reading` | Local/remote file disclosure, traversal, backup exposure, archive extraction, and misconfigured file serving. |
 | `file-upload` | Upload validation bypass, stored content execution, parser abuse, media conversion flaws, and cloud upload exposure. |
 | `graphql` | GraphQL authorization, introspection, batching, aliasing, mutation abuse, schema leaks, and resolver behavior. |
@@ -61,6 +67,12 @@ Each skill lives under `bug-type-skills/<skill-name>/`:
 Install or copy the desired skill folders into the Codex skills directory used
 by your environment, then invoke the relevant skill by name when you want Codex
 to apply that bug-type methodology.
+
+For a focused report-learning pass, invoke `$bug-bounty-research`. For an
+architecture-driven engagement that combines live research, code analysis,
+manual testing, chain validation, and evidence production, invoke
+`$elite-bug-bounty-hunting`. Establish a normal baseline, change one condition,
+use a negative control, and stop after the smallest controlled proof.
 
 These are research and testing guides. Use them only on systems where you have
 permission to test.

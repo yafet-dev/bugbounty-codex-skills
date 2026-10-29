@@ -1,6 +1,6 @@
 ---
 name: waf-parser-differentials
-description: Test parser and normalization differentials between WAFs, proxies, servers, frameworks, and final sinks during authorized application security work. Use when equivalent requests are blocked or interpreted differently because of charset, URL/JSON/XML encoding, content type, parameter duplication, path normalization, application wrappers, or framework-specific parsing. Do not treat a WAF bypass alone as a vulnerability; require demonstrable backend security impact.
+description: Test parser and normalization differentials between WAFs, proxies, servers, frameworks, and final sinks during authorized application security work. Use when equivalent requests are blocked or interpreted differently because of charset, URL/JSON/XML encoding, content type, parameter duplication, path normalization, application wrappers, or framework-specific parsing, including standalone defensive-control research and chains into downstream behavior.
 ---
 
 # WAF Parser Differential Testing
@@ -9,9 +9,13 @@ description: Test parser and normalization differentials between WAFs, proxies, 
 
 Treat the request as a pipeline of parsers, not a single string. A useful finding exists when an upstream control approves one interpretation while a downstream component reconstructs different security-sensitive meaning.
 
-Keep the root vulnerability separate from the bypass. SQLi, XSS, SSTI, file read, SSRF, cache poisoning, or an authorization failure is the security issue; the WAF or validation differential explains why a defensive layer did not stop it.
+Record the control bypass and downstream behavior as separate capabilities. Depending on the program, a WAF or validation differential may be assessed independently or chained with SQLi, XSS, SSTI, file read, SSRF, cache poisoning, or an authorization failure.
 
 Test only authorized assets and request volumes. Begin with harmless semantic controls, use bounded delays and controlled callbacks, and avoid shared-cache or cross-user effects.
+
+## Report-Derived Starting Point
+
+Identify the two components that disagree, then change one encoding or structure at a time. Reduce the discrepancy to a small transformation, preserve exact evidence from both components, and separately record any backend behavior so program-specific rules—not the skill—determine reportability.
 
 ## Differential Families
 
@@ -46,15 +50,15 @@ Test only authorized assets and request volumes. Begin with harmless semantic co
 - For SSTI or other language sinks, build upward from harmless expressions and use syntax valid for the identified engine instead of blindly obfuscating a complex payload.
 - Automate only after a manual variant proves the transformation. Preserve request order, unique correlation IDs, bounded concurrency, and per-variant evidence.
 
-## Confirmation Discipline
+## Evidence and Interpretation
 
-Strong evidence shows both sides of the differential and the resulting security effect. Preserve the baseline, blocked form, accepted equivalent form, negative control, downstream interpretation, and minimal impact proof.
+Preserve both sides of the differential: the baseline, blocked form, accepted equivalent form, negative control, and exact parser interpretations. When a downstream effect exists, preserve that evidence separately. Let the program's policy determine whether the control differential is assessed alone or as part of a chain.
 
-Rule out weak findings:
+Classify these outcomes explicitly rather than collapsing them into one claim:
 
 - `403` becomes `200`, but the parameter is ignored or the response is a generic fallback.
 - Base64 or another wrapper changes the decoded bytes or semantics of the control value.
-- A WAF permits the request, but the application safely parameterizes, escapes, rejects, or sandboxes the value.
+- A WAF permits the request while the application safely parameterizes, escapes, rejects, or sandboxes the value; record this as control-layer behavior without attributing an application-sink effect.
 - Timing changes are inconsistent or lack matched true/false and no-delay controls.
 - A cache observation lacks cache-key evidence or risks poisoning content for other users.
 - Multiple endpoints share one parser/sink and are counted as unrelated root causes without program-specific justification.

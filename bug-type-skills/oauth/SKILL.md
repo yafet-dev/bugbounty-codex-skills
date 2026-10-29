@@ -9,6 +9,10 @@ description: Advanced OAuth security testing methodology for bug bounty and appl
 
 Treat OAuth as a chain of bindings: user, client, redirect URI, state, code, token, scope, and account linkage. A flaw in any binding can leak tokens or bind the wrong identity.
 
+## Report-Derived Starting Point
+
+Map the full browser redirect chain and state binding, including account linking and already-approved users. Successful reports challenged validator assumptions about complete URLs, then combined a weak callback form with another trusted redirect to deliver the token or code.
+
 ## Priority Patterns
 
 - Redirect URI bypass: path traversal, open redirect chains, IDN/homograph, fragment leakage, wildcard subdomains, and URL parser mismatch.

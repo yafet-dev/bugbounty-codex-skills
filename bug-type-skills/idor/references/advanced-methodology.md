@@ -14,6 +14,19 @@ Use this reference to plan a thorough IDOR/BOLA assessment. The goal is to prove
 - Impact escalation
 - Developer remediation checklist
 
+## Start here: how hunters found this in real reports
+
+1. **Create two controlled identities and objects.** Give each object a distinctive name or value so mixed responses are obvious.
+2. **Inventory every reference form.** Numeric IDs, UUIDs, slugs, filenames, global IDs, cursors, nested IDs, and indirect share tokens may reach the same object.
+3. **Change only the object reference.** Keep the attacker’s session and request shape constant, then substitute the victim-controlled object.
+4. **Test every verb and lifecycle state.** Read, edit, delete, restore, share, export, clone, comment, and attachment routes often enforce different checks.
+5. **Compare clients and workers.** Web may deny while mobile, old API, GraphQL, bulk routes, or background export accepts.
+6. **Verify from both sides.** Confirm the attacker saw data or caused a change, then inspect the victim object, audit log, or notification.
+
+### Expand the pattern
+
+Do not spend time only guessing random IDs. Harvest your own references, learn relationships, and test a clear ownership or tenant boundary. Use only controlled accounts and data.
+
 ## 1. Identity and object matrix
 
 Create accounts and objects before testing:

@@ -9,6 +9,10 @@ description: Advanced remote code execution testing methodology for bug bounty a
 
 Treat RCE as attacker influence over code, command, interpreter, job, package, or plugin execution. Identify the execution context, privilege, trigger, and sandbox boundary before escalating.
 
+## Report-Derived Starting Point
+
+Find the component that actually interprets input—template engine, shell wrapper, deserializer, build hook, or converter—then climb a harmless proof ladder. A string that looks executable is not evidence until a controlled side effect identifies the execution context.
+
 ## Priority Patterns
 
 - Upload/render RCE: logo upload, image/PDF/SVG converters, file upload, archive processing, and media metadata.

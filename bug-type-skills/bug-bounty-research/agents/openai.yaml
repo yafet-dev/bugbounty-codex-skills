@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bug Bounty Research"
+  short_description: "Turn reports into practical hunting methods"
+  default_prompt: "Use $bug-bounty-research to learn the hunter's reasoning from relevant public reports, then produce a plain-language, prioritized, and safe test playbook for this authorized target or feature."

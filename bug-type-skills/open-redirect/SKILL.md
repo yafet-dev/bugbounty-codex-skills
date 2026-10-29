@@ -9,6 +9,10 @@ description: Advanced open redirect testing methodology for bug bounty and appli
 
 Treat open redirect as trust transfer. The impact depends on what trust the redirecting origin carries: OAuth callback, login session, token, cookie, QR scan, mobile handoff, or user reputation.
 
+## Report-Derived Starting Point
+
+Do not stop at a redirect. Trace what security material survives every hop—codes, tokens, trusted-domain UI, allowlist status, or cookies—and only claim impact when the redirect completes a real chain.
+
 ## Priority Patterns
 
 - OAuth/SSO redirects leaking codes, tokens, or trusted callback control.

@@ -11,6 +11,10 @@ Treat authorization bugs as failures to enforce who may perform an action on whi
 
 Use public case lessons as prioritization signals, not as a fixed recipe. Choose inspection methods from the user's artifacts and target type. Do not narrow the skill to IDOR alone; include role escalation, workflow bypass, SSO/domain trust, GraphQL, admin panels, local/container privilege boundaries, and cross-tenant systems.
 
+## Report-Derived Starting Point
+
+Pick one protected action and replay it across users, roles, tenants, object states, transports, and background workers. Real reports often find that the first request is checked but a copied object, nested resource, or asynchronous job is trusted afterward.
+
 ## Priority Patterns
 
 Prioritize flows where one identity can become more trusted or act across a boundary:

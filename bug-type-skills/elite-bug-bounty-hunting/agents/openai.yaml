@@ -1,0 +1,4 @@
+interface:
+  display_name: "Elite Bug Bounty Hunting"
+  short_description: "Architecture-driven, high-impact bug bounty research"
+  default_prompt: "Use $elite-bug-bounty-hunting to build an authorized, research-driven testing plan and validate high-impact findings without scanner noise."

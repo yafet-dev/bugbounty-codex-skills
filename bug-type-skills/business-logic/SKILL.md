@@ -11,6 +11,10 @@ Treat business logic bugs as broken product rules, not parser bugs. Identify the
 
 Use public case lessons as prioritization signals. Choose inspection methods from the user's artifacts and target type; do not narrow the skill to one product area.
 
+## Report-Derived Starting Point
+
+Write the business rule in one sentence, then try valid actions in an invalid order, twice, with a negative amount, or across two channels. Report-quality proof is the final business state, not an unusual response.
+
 ## Priority Patterns
 
 - Money and value: negative quantities, balance manipulation, discounts, refunds, gift cards, credits, coupons, reward points, free bookings, and payment-state mismatches.

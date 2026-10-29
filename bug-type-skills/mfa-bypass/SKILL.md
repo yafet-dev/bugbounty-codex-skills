@@ -9,6 +9,10 @@ description: Advanced MFA and 2FA bypass testing methodology for bug bounty and 
 
 Treat MFA as a second proof bound to a user, session, device, action, and time. Test enrollment, enforcement, recovery, disable, and remembered-device flows, not only the login challenge.
 
+## Report-Derived Starting Point
+
+Test MFA as a lifecycle, not just a code screen. Capture sessions before enrollment, after enrollment, after disable, after recovery, and after password change; real reports found that old sessions or alternate clients kept the weaker assurance state.
+
 ## Priority Patterns
 
 - Challenge bypass: blank codes, reused codes, wrong-code acceptance, race conditions, and response manipulation.

@@ -11,6 +11,10 @@ Treat API hacking as trust-boundary testing. Identify who can call an endpoint, 
 
 Use public case lessons as prioritization signals, not as a fixed recipe. Choose inspection methods from the user's artifacts and target type. Do not narrow the skill to REST alone; include GraphQL, mobile, internal, cloud, control-plane, callback, and background-job APIs.
 
+## Report-Derived Starting Point
+
+Start from one business action and compare every API surface that can perform it: web, mobile, old versions, GraphQL, bulk endpoints, exports, and background jobs. The best reports find that one surface trusts an object ID, role, field, or state that another surface enforces.
+
 ## Priority Patterns
 
 Prioritize APIs that expose secrets, cross boundaries, or control infrastructure:

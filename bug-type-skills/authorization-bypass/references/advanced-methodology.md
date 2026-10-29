@@ -16,6 +16,19 @@ Use this reference to plan a thorough authorization bypass and privilege escalat
 - Impact ranking
 - Developer remediation checklist
 
+## Start here: how hunters found this in real reports
+
+1. **Choose one protected action.** Copy, export, delete, approve, share, invite, restore, or change a role.
+2. **Build the smallest useful matrix.** Test owner versus non-owner, member versus removed member, tenant A versus tenant B, and active versus archived objects.
+3. **Follow the action past the first controller.** Real reports found checks on the initial request but not in service objects, model callbacks, copied child records, or asynchronous workers.
+4. **Change the container.** Test user-owned versus group-owned destinations, private versus public parents, and parent visibility versus child visibility.
+5. **Change the route.** Repeat the action through GraphQL, REST, mobile, bulk, import/export, and scheduled jobs.
+6. **Confirm at the protected object.** Use controlled data to show an unauthorized read or durable state change, then verify it from the other account.
+
+### Expand the pattern
+
+Once a missing check is identified, search sibling operations that call the same service or worker. Describe the broken rule in plain language so the fix covers every route, not just the reported URL.
+
 ## 1. Principal and role matrix
 
 Track principals and states:

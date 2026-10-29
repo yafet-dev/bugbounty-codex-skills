@@ -9,6 +9,10 @@ description: Advanced file upload vulnerability testing methodology for bug boun
 
 Treat uploads as a pipeline: accept, validate, store, process, render, serve, and delete. Test every step, not only extension filtering.
 
+## Report-Derived Starting Point
+
+Treat upload as a pipeline: admission, transformation, storage, and delivery. Successful reports find that a later consumer trusts the file differently from the upload validator, then prove that mismatch with a harmless controlled file.
+
 ## Priority Patterns
 
 - Webshell/RCE through executable upload, admin upload, plugin upload, or server-side processing.

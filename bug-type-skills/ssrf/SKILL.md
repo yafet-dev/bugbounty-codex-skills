@@ -9,6 +9,10 @@ description: Advanced SSRF testing methodology for bug bounty and application se
 
 Treat SSRF as backend reachability controlled by user input. Identify the fetcher, network position, URL parser, redirect policy, response channel, and internal trust available to the backend.
 
+## Report-Derived Starting Point
+
+Start with features that import, preview, attach, render, validate, or deliver remote content. Real reports often inserted a hidden model field that the UI never showed, then let an importer or background callback trigger the server-side fetch.
+
 ## Priority Patterns
 
 - Preview/export/import APIs, webhook callbacks, image/avatar fetchers, PDF/renderers, and game/report exports.

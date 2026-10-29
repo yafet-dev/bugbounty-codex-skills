@@ -9,6 +9,10 @@ description: Advanced OpenID, OIDC, SAML, and SSO security testing methodology f
 
 Treat SSO as delegated authorization: the service must verify identity, domain, tenant, client, assertion, and session binding before granting access.
 
+## Report-Derived Starting Point
+
+Separate proof of a federation token from proof that it belongs to the intended local account and tenant. Compare verified and unverified emails, issuer changes, just-in-time provisioning, invites, local fallback, and deprovisioned users.
+
 ## Priority Patterns
 
 - Email/domain verification bypass: arbitrary verified email, domain enforcement gaps, trailing/control characters, and unverified OAuth grants.

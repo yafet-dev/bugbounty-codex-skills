@@ -9,6 +9,10 @@ description: Advanced XML External Entity (XXE) testing methodology for bug boun
 
 Treat XXE as unsafe XML entity resolution. Identify where XML-like input is parsed, whether external entities or DTDs are allowed, and what filesystem or network the parser can reach.
 
+## Report-Derived Starting Point
+
+Search for XML inside ordinary-looking features such as office files, SVG, SAML, feeds, and conversion jobs. Prove which parser performs external resolution with a controlled callback or harmless local marker, including delayed workers.
+
 ## Priority Patterns
 
 - Direct XML endpoints: SOAP, SXMP, API XML, legacy upload, and dynamic page processors.

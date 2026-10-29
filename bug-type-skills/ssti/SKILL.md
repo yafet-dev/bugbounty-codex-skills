@@ -9,6 +9,10 @@ description: Advanced server-side template injection testing methodology for bug
 
 Treat SSTI as server-side expression evaluation. Identify the template engine, where user input enters the template, and whether execution reaches objects, filesystem, commands, or secrets.
 
+## Report-Derived Starting Point
+
+Find where tenant-controlled text becomes a template rather than template data, including delayed email and document workers. Confirm with a harmless expression and compare preview versus delivery before reasoning about a privileged execution context.
+
 ## Priority Patterns
 
 - Email templates, CMS pages, signup/name fields, preview systems, and custom content blocks.
