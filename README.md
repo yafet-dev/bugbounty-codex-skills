@@ -26,6 +26,11 @@ Each skill lives under `bug-type-skills/<skill-name>/`:
 
 `bug-type-skills/elite-bug-bounty-hunting/` is the architecture-driven orchestration skill. It routes among focused references for research refresh, code-to-runtime analysis, identity and authorization, server-side primitives, state and business logic, parser/cache/edge behavior, client-side delivery, exploit-chain validation, and PoC evidence. Its scripts operate only on local researcher-authored ledgers and saved evidence; they do not scan targets.
 
+`bug-type-skills/bug-bounty-skill-creator/` helps you write new skills. It has a
+script that sets up a new skill folder and one that checks the skill is
+formatted right. It's based on OpenAI's skill-creator (Apache 2.0); see its
+`NOTICE` file for what changed.
+
 ## Skills
 
 | Skill | Focus |
@@ -35,6 +40,7 @@ Each skill lives under `bug-type-skills/<skill-name>/`:
 | `auth-hacking` | Broken authentication, login bypasses, weak session handling, 2FA gaps, and auth flow abuse. |
 | `authorization-bypass` | Privilege escalation, cross-tenant access, role bypass, admin exposure, and object-level access failures. |
 | `bug-bounty-research` | Live report and original-research mining, scope modeling, hypothesis generation, differential experiments, confirmation, and skill routing. |
+| `bug-bounty-skill-creator` | Create, update, and check skills in this repo, with a starter template and a validator. |
 | `business-logic` | Workflow abuse, payment/order manipulation, state-machine flaws, reward abuse, and process bypasses. |
 | `clickjacking` | UI redress risks, framing-sensitive actions, OAuth/login consent framing, and account-impacting click paths. |
 | `csrf` | State-changing request forgery, login CSRF, linked-account abuse, token leakage chains, and weak anti-CSRF defenses. |
@@ -53,7 +59,6 @@ Each skill lives under `bug-type-skills/<skill-name>/`:
 | `race-condition` | Concurrent workflow abuse, double spend, invite/reward duplication, state transition races, and TOCTOU flaws. |
 | `rce` | Remote code execution paths through exposed services, admin panels, upload chains, injection, CI/CD, and internal tools. |
 | `request-smuggling` | HTTP desync, proxy/front-end mismatch, auth bypass, cache poisoning, request queue poisoning, and session theft chains. |
-| [`skill-creator`](bug-type-skills/skill-creator/SKILL.md) | Create and validate Codex skills using the bundled templates and scripts. |
 | `sqli` | SQL injection in APIs, admin tools, search, GraphQL-backed data access, blind extraction, and impact escalation. |
 | `ssrf` | Blind SSRF, cloud metadata access, internal service reachability, preview/export/fetch APIs, and protocol abuse. |
 | `ssti` | Server-side template injection, expression evaluation, sandbox escape, email/template editors, and rendering pipelines. |
@@ -75,5 +80,12 @@ manual testing, chain validation, and evidence production, invoke
 `$elite-bug-bounty-hunting`. Establish a normal baseline, change one condition,
 use a negative control, and stop after the smallest controlled proof.
 
+To add a new skill or fix an existing one, invoke `$bug-bounty-skill-creator`.
+
 These are research and testing guides. Use them only on systems where you have
 permission to test.
+
+## Contributing
+
+Want to help? Read [CONTRIBUTING.md](CONTRIBUTING.md). It explains how to add
+or improve a skill and what to check before you open a pull request.
