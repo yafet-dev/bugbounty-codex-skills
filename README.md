@@ -53,6 +53,7 @@ Each skill lives under `bug-type-skills/<skill-name>/`:
 | `race-condition` | Concurrent workflow abuse, double spend, invite/reward duplication, state transition races, and TOCTOU flaws. |
 | `rce` | Remote code execution paths through exposed services, admin panels, upload chains, injection, CI/CD, and internal tools. |
 | `request-smuggling` | HTTP desync, proxy/front-end mismatch, auth bypass, cache poisoning, request queue poisoning, and session theft chains. |
+| [`skill-creator`](bug-type-skills/skill-creator/SKILL.md) | Create and validate Codex skills using the bundled templates and scripts. |
 | `sqli` | SQL injection in APIs, admin tools, search, GraphQL-backed data access, blind extraction, and impact escalation. |
 | `ssrf` | Blind SSRF, cloud metadata access, internal service reachability, preview/export/fetch APIs, and protocol abuse. |
 | `ssti` | Server-side template injection, expression evaluation, sandbox escape, email/template editors, and rendering pipelines. |
