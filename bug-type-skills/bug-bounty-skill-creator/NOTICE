@@ -1,0 +1,15 @@
+Bug Bounty Skill Creator
+
+This skill is based on the skill-creator skill that ships with OpenAI Codex,
+which is licensed under the Apache License, Version 2.0 (see license.txt).
+
+Changes made for this repo:
+
+- Renamed from skill-creator to bug-bounty-skill-creator so it doesn't clash
+  with the skill-creator that's built into Codex.
+- Rewrote SKILL.md in plain English and added guidance for this repo's bug
+  bounty skills.
+- Added a default_prompt to agents/openai.yaml.
+- scripts/quick_validate.py, scripts/generate_openai_yaml.py and
+  scripts/init_skill.py now read and write files as UTF-8, so they work on
+  Windows too.
